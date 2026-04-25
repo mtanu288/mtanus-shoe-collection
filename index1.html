@@ -1,0 +1,598 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Mtanu's Shoe Collection</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet"/>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --navy: #0f2060;
+    --blue: #1a4db5;
+    --sky: #3a7bd5;
+    --light: #e8f0fe;
+    --white: #ffffff;
+    --text: #111827;
+    --muted: #6b7280;
+    --border: #d1ddf5;
+  }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: #f0f5ff;
+    color: var(--text);
+  }
+
+  /* ── NAVBAR ── */
+  nav {
+    background: var(--navy);
+    padding: 0 2.5rem;
+    height: 70px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    box-shadow: 0 2px 20px rgba(0,0,0,0.3);
+  }
+
+  .logo {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    text-decoration: none;
+  }
+
+  /* SVG LOGO ICON */
+  .logo-icon {
+    width: 48px;
+    height: 48px;
+    flex-shrink: 0;
+  }
+
+  .logo-text {
+    display: flex;
+    flex-direction: column;
+  }
+  .logo-text .brand {
+    font-family: 'Playfair Display', serif;
+    font-size: 20px;
+    color: #fff;
+    line-height: 1;
+    letter-spacing: 0.5px;
+  }
+  .logo-text .tagline {
+    font-size: 10px;
+    color: #93b8f8;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    margin-top: 2px;
+  }
+
+  .nav-links {
+    display: flex;
+    gap: 2rem;
+    list-style: none;
+  }
+  .nav-links a {
+    color: #b3ccf5;
+    text-decoration: none;
+    font-size: 14px;
+    font-weight: 500;
+    transition: color 0.2s;
+  }
+  .nav-links a:hover { color: #fff; }
+
+  .cart-btn {
+    background: #fff;
+    color: var(--navy);
+    border: none;
+    border-radius: 25px;
+    padding: 9px 20px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    transition: background 0.2s;
+    font-family: 'DM Sans', sans-serif;
+  }
+  .cart-btn:hover { background: #e8f0fe; }
+
+  /* ── HERO ── */
+  .hero {
+    background: linear-gradient(135deg, #0a1845 0%, #0f2060 40%, #1a4db5 75%, #3a7bd5 100%);
+    color: #fff;
+    text-align: center;
+    padding: 5rem 2rem 4rem;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero::before {
+    content: '';
+    position: absolute;
+    width: 500px; height: 500px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.04);
+    top: -200px; right: -100px;
+  }
+  .hero::after {
+    content: '';
+    position: absolute;
+    width: 300px; height: 300px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.03);
+    bottom: -100px; left: -50px;
+  }
+  .hero-badge {
+    display: inline-block;
+    background: rgba(255,255,255,0.12);
+    border: 1px solid rgba(255,255,255,0.2);
+    border-radius: 20px;
+    padding: 5px 16px;
+    font-size: 12px;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: #b3ccf5;
+    margin-bottom: 1.2rem;
+  }
+  .hero h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: 48px;
+    line-height: 1.15;
+    margin-bottom: 1rem;
+  }
+  .hero p {
+    font-size: 16px;
+    color: #b3ccf5;
+    margin-bottom: 2rem;
+    max-width: 480px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  .hero-btn {
+    background: #fff;
+    color: var(--navy);
+    border: none;
+    border-radius: 30px;
+    padding: 14px 36px;
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+    font-family: 'DM Sans', sans-serif;
+    transition: transform 0.2s;
+  }
+  .hero-btn:hover { transform: scale(1.04); }
+
+  /* ── SECTION ── */
+  .section {
+    padding: 3rem 2rem;
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+  .section-head { margin-bottom: 2rem; }
+  .section-head h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: 28px;
+    color: var(--navy);
+    margin-bottom: 4px;
+  }
+  .section-head p { color: var(--muted); font-size: 14px; }
+
+  /* ── GRID ── */
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 22px;
+  }
+
+  .card {
+    background: #fff;
+    border-radius: 18px;
+    border: 1px solid var(--border);
+    overflow: hidden;
+    transition: transform 0.25s, box-shadow 0.25s;
+  }
+  .card:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 16px 40px rgba(15,32,96,0.12);
+  }
+
+  .card-img {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+    background: #e8f0fe;
+    display: block;
+  }
+
+  .card-body {
+    padding: 14px 16px 16px;
+  }
+  .card-brand {
+    font-size: 10px;
+    color: var(--blue);
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    font-weight: 600;
+    margin-bottom: 4px;
+  }
+  .card-name {
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--text);
+    margin-bottom: 4px;
+  }
+  .card-desc {
+    font-size: 12px;
+    color: var(--muted);
+    margin-bottom: 14px;
+    line-height: 1.5;
+  }
+  .card-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .card-price {
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--navy);
+  }
+  .card-price span {
+    font-size: 10px;
+    font-weight: 400;
+    color: #aaa;
+  }
+  .order-btn {
+    background: var(--navy);
+    color: #fff;
+    border: none;
+    border-radius: 20px;
+    padding: 7px 16px;
+    font-size: 12px;
+    font-weight: 500;
+    cursor: pointer;
+    font-family: 'DM Sans', sans-serif;
+    transition: background 0.2s;
+  }
+  .order-btn:hover { background: var(--blue); }
+
+  /* ── MODAL ── */
+  .modal-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(5,15,50,0.6);
+    z-index: 999;
+    align-items: center;
+    justify-content: center;
+  }
+  .modal-overlay.open { display: flex; }
+  .modal {
+    background: #fff;
+    border-radius: 22px;
+    padding: 2rem;
+    width: 360px;
+    max-width: 95vw;
+    position: relative;
+    animation: slideUp 0.25s ease;
+  }
+  @keyframes slideUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  .modal-close {
+    position: absolute;
+    top: 14px; right: 18px;
+    background: #f0f5ff;
+    border: none;
+    width: 30px; height: 30px;
+    border-radius: 50%;
+    font-size: 16px;
+    cursor: pointer;
+    color: #555;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .modal h3 {
+    font-family: 'Playfair Display', serif;
+    font-size: 18px;
+    color: var(--navy);
+    margin-bottom: 4px;
+  }
+  .modal .modal-price {
+    font-size: 22px;
+    font-weight: 600;
+    color: var(--blue);
+    margin-bottom: 1.2rem;
+  }
+  .modal label {
+    font-size: 12px;
+    color: var(--muted);
+    font-weight: 500;
+    display: block;
+    margin-bottom: 4px;
+  }
+  .modal input,
+  .modal select {
+    width: 100%;
+    padding: 9px 13px;
+    border: 1.5px solid #d1ddf5;
+    border-radius: 10px;
+    font-size: 13px;
+    font-family: 'DM Sans', sans-serif;
+    color: var(--text);
+    margin-bottom: 13px;
+    outline: none;
+    transition: border-color 0.2s;
+  }
+  .modal input:focus,
+  .modal select:focus { border-color: var(--blue); }
+  .modal-btns { display: flex; gap: 10px; margin-top: 4px; }
+  .btn-place {
+    flex: 1;
+    background: var(--navy);
+    color: #fff;
+    border: none;
+    border-radius: 22px;
+    padding: 11px;
+    font-size: 14px;
+    font-weight: 600;
+    font-family: 'DM Sans', sans-serif;
+    cursor: pointer;
+    transition: background 0.2s;
+  }
+  .btn-place:hover { background: var(--blue); }
+  .btn-cancel {
+    flex: 1;
+    background: #eef3ff;
+    color: var(--navy);
+    border: 1px solid var(--border);
+    border-radius: 22px;
+    padding: 11px;
+    font-size: 14px;
+    font-family: 'DM Sans', sans-serif;
+    cursor: pointer;
+  }
+
+  .modal-success {
+    display: none;
+    text-align: center;
+    padding: 1rem 0;
+  }
+  .success-icon {
+    width: 64px; height: 64px;
+    background: #e8f0fe;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 32px;
+    margin: 0 auto 1rem;
+  }
+  .modal-success h4 {
+    font-family: 'Playfair Display', serif;
+    font-size: 20px;
+    color: var(--navy);
+    margin-bottom: 6px;
+  }
+  .modal-success p {
+    font-size: 13px;
+    color: var(--muted);
+    line-height: 1.6;
+  }
+
+  /* ── FOOTER ── */
+  footer {
+    background: var(--navy);
+    color: #93b8f8;
+    text-align: center;
+    padding: 2.5rem 1.5rem;
+    font-size: 13px;
+    line-height: 2;
+    margin-top: 2rem;
+  }
+  footer strong { color: #fff; font-size: 15px; }
+  footer .divider { margin: 0 10px; }
+</style>
+</head>
+<body>
+
+<!-- ── NAVBAR ── -->
+<nav>
+  <a class="logo" href="#">
+    <!-- SVG LOGO -->
+    <svg class="logo-icon" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <circle cx="24" cy="24" r="24" fill="#ffffff"/>
+      <!-- Shoe sole -->
+      <ellipse cx="24" cy="34" rx="16" ry="4" fill="#1a4db5"/>
+      <!-- Shoe upper -->
+      <path d="M10 30 Q10 20 18 18 L30 17 Q38 17 38 24 L38 30 Z" fill="#0f2060"/>
+      <!-- Laces -->
+      <line x1="18" y1="22" x2="22" y2="20" stroke="#ffffff" stroke-width="1.5" stroke-linecap="round"/>
+      <line x1="22" y1="21" x2="26" y2="19" stroke="#ffffff" stroke-width="1.5" stroke-linecap="round"/>
+      <line x1="26" y1="20" x2="30" y2="19" stroke="#ffffff" stroke-width="1.5" stroke-linecap="round"/>
+      <!-- Toe cap -->
+      <path d="M10 30 Q9 28 12 26 Q15 24 18 24 L18 30 Z" fill="#3a7bd5"/>
+      <!-- Stripe -->
+      <path d="M22 18 Q30 17 36 22" stroke="#3a7bd5" stroke-width="2" stroke-linecap="round" fill="none"/>
+    </svg>
+    <div class="logo-text">
+      <span class="brand">Mtanu's</span>
+      <span class="tagline">Shoe Collection</span>
+    </div>
+  </a>
+
+  <ul class="nav-links">
+    <li><a href="#">Home</a></li>
+    <li><a href="#">Collection</a></li>
+    <li><a href="#">About</a></li>
+    <li><a href="#">Contact</a></li>
+  </ul>
+
+  <button class="cart-btn">
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+      <path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/>
+      <path d="M16 10a4 4 0 01-8 0"/>
+    </svg>
+    Cart
+  </button>
+</nav>
+
+<!-- ── HERO ── -->
+<div class="hero">
+  <div class="hero-badge">✦ New Arrivals 2025</div>
+  <h1>Step Into Style</h1>
+  <p>Premium footwear handpicked for you — delivered right to your door across Kenya</p>
+  <button class="hero-btn">Shop the Collection</button>
+</div>
+
+<!-- ── PRODUCTS ── -->
+<div class="section">
+  <div class="section-head">
+    <h2>Our Collection</h2>
+    <p>6 top styles · All prices in Kenyan Shillings · Free delivery in Nairobi</p>
+  </div>
+  <div class="grid" id="grid"></div>
+</div>
+
+<!-- ── FOOTER ── -->
+<footer>
+  <strong>Mtanu's Shoe Collection</strong><br>
+  📍 Nairobi, Kenya
+  <span class="divider">|</span>
+  📞 +254 700 000 000
+  <span class="divider">|</span>
+  ✉️ info@mtanushoes.co.ke<br>
+  © 2025 Mtanu's Shoe Collection. All rights reserved.
+</footer>
+
+<!-- ── ORDER MODAL ── -->
+<div class="modal-overlay" id="overlay">
+  <div class="modal">
+    <button class="modal-close" onclick="closeModal()">✕</button>
+    <div id="orderForm">
+      <h3 id="mName">Order Shoe</h3>
+      <div class="modal-price" id="mPrice"></div>
+      <label>Full Name</label>
+      <input type="text" placeholder="e.g. Amina Wanjiku" />
+      <label>Phone Number</label>
+      <input type="text" placeholder="e.g. 0712 345 678" />
+      <label>Delivery Location</label>
+      <input type="text" placeholder="e.g. Westlands, Nairobi" />
+      <label>Shoe Size (EU)</label>
+      <select>
+        <option value="">Select size</option>
+        <option>37</option><option>38</option><option>39</option>
+        <option>40</option><option>41</option><option>42</option>
+        <option>43</option><option>44</option><option>45</option><option>46</option>
+      </select>
+      <label>Quantity</label>
+      <select>
+        <option>1</option><option>2</option><option>3</option>
+      </select>
+      <div class="modal-btns">
+        <button class="btn-cancel" onclick="closeModal()">Cancel</button>
+        <button class="btn-place" onclick="placeOrder()">Place Order</button>
+      </div>
+    </div>
+    <div class="modal-success" id="successMsg">
+      <div class="success-icon">✅</div>
+      <h4>Order Placed!</h4>
+      <p>Thank you! We will call you shortly to confirm your delivery details.</p>
+    </div>
+  </div>
+</div>
+
+<script>
+const shoes = [
+  {
+    brand: "Nike",
+    name: "Air Max 270",
+    price: 12500,
+    desc: "Max Air heel unit for all-day comfort on any terrain.",
+    img: "https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=500&q=80"
+  },
+  {
+    brand: "Adidas",
+    name: "Ultraboost 22",
+    price: 14800,
+    desc: "Responsive BOOST midsole returns energy with every stride.",
+    img: "https://images.unsplash.com/photo-1608231387042-66d1773070a5?w=500&q=80"
+  },
+  {
+    brand: "Puma",
+    name: "Suede Classic",
+    price: 8200,
+    desc: "Iconic street style crafted from premium suede upper.",
+    img: "https://images.unsplash.com/photo-1600185365483-26d7a4cc7519?w=500&q=80"
+  },
+  {
+    brand: "Vans",
+    name: "Old Skool",
+    price: 7500,
+    desc: "Classic skate shoe featuring the iconic side stripe.",
+    img: "https://images.unsplash.com/photo-1525966222134-fcfa99b8ae77?w=500&q=80"
+  },
+  {
+    brand: "New Balance",
+    name: "Fresh Foam 1080",
+    price: 16000,
+    desc: "Ultra-plush cushioning engineered for long distances.",
+    img: "https://images.unsplash.com/photo-1539185441755-769473a23570?w=500&q=80"
+  },
+  {
+    brand: "Converse",
+    name: "Chuck Taylor All Star",
+    price: 6900,
+    desc: "The original hi-top canvas sneaker since 1917.",
+    img: "https://images.unsplash.com/photo-1494496195158-c3bc2fbde5ac?w=500&q=80"
+  }
+];
+
+const grid = document.getElementById("grid");
+
+shoes.forEach((s, i) => {
+  const card = document.createElement("div");
+  card.className = "card";
+  card.innerHTML = `
+    <img class="card-img" src="${s.img}" alt="${s.name}" loading="lazy" />
+    <div class="card-body">
+      <div class="card-brand">${s.brand}</div>
+      <div class="card-name">${s.name}</div>
+      <div class="card-desc">${s.desc}</div>
+      <div class="card-footer">
+        <div class="card-price">KSh ${s.price.toLocaleString()} <span>/ pair</span></div>
+        <button class="order-btn" onclick="openModal(${i})">Order Now</button>
+      </div>
+    </div>
+  `;
+  grid.appendChild(card);
+});
+
+function openModal(i) {
+  document.getElementById("mName").textContent = shoes[i].brand + " " + shoes[i].name;
+  document.getElementById("mPrice").textContent = "KSh " + shoes[i].price.toLocaleString();
+  document.getElementById("orderForm").style.display = "block";
+  document.getElementById("successMsg").style.display = "none";
+  document.getElementById("overlay").classList.add("open");
+}
+
+function closeModal() {
+  document.getElementById("overlay").classList.remove("open");
+}
+
+function placeOrder() {
+  document.getElementById("orderForm").style.display = "none";
+  document.getElementById("successMsg").style.display = "block";
+  setTimeout(closeModal, 3500);
+}
+
+document.getElementById("overlay").addEventListener("click", function(e) {
+  if (e.target === this) closeModal();
+});
+</script>
+</body>
+</html>
